@@ -11,6 +11,27 @@ else {
 
 
 include('db_connect.php');
+$user_type = $_SESSION['user_type'];
+
+
+// Query to get the last order_uid
+$sql = "SELECT order_uid FROM order_new ORDER BY order_new_id DESC LIMIT 1";
+$result = $con->query($sql);
+
+if ($result->num_rows > 0) {
+    // Fetch the last order_uid
+    $row = $result->fetch_assoc();
+    $last_order_uid = $row['order_uid'];
+
+    // Assuming order_uid is numeric, increment it by 1
+    $new_order_uid = (int)$last_order_uid + 1;
+} else {
+    // If no previous order_uid exists, start with a default value
+    $new_order_uid = 1; // Or any other starting value
+}
+
+echo "The new order_uid is: " . $new_order_uid;
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Database connection setup
@@ -37,23 +58,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $taxes = $_POST['tax'];
     $totals = $_POST['total'];
 
-// Query to get the last order_uid
-$sql = "SELECT order_uid FROM order_new ORDER BY order_new_id DESC LIMIT 1";
-$result = $con->query($sql);
-
-if ($result->num_rows > 0) {
-    // Fetch the last order_uid
-    $row = $result->fetch_assoc();
-    $last_order_uid = $row['order_uid'];
-
-    // Assuming order_uid is numeric, increment it by 1
-    $new_order_uid = (int)$last_order_uid + 1;
-} else {
-    // If no previous order_uid exists, start with a default value
-    $new_order_uid = 1; // Or any other starting value
-}
-
-echo "The new order_uid is: " . $new_order_uid;
 
 
     // Loop through the arrays and insert each row into the database
@@ -140,7 +144,11 @@ echo "The new order_uid is: " . $new_order_uid;
 <button type="submit">Submit</button>
 </form>
 <button id="addRow">Add Row</button>
-<button id="printpdf">Print PDF</button>
+<?php echo "<a class='btn btn-primary'  href=\"invoice_new_try.php?id=" . $last_order_uid . "\" target='_blank'><button><i class='fas fa-receipt'>Print</i></button></a> ";
+                                    if ($user_type == 'admin') {
+
+                                        echo "<td> <a class='confirmation btn btn-danger'  href=\"delete_order.php?id=" . $new_order_uid . "\" ><i class='fas fa-trash'> </i></a></td>";
+                                    }?>
 
 <script>
 $(document).ready(function() {
