@@ -258,7 +258,11 @@ else {
 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">All orders information</h3>
+                        <button type="button" onclick="location.href = 'new_order.php';"
+                                    class="btn btn-primary float-right"><i class='fas fa-plus-circle'></i>  New
+                                Order
+                            </button> <h3 class="card-title">All orders information</h3>
+                            
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
