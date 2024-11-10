@@ -1,47 +1,86 @@
 <?php
+
+
+session_start();
+if (isset($_SESSION['email']) AND isset($_SESSION['user_type']) AND isset($_SESSION['key']) )
+    echo " ";
+else {
+    header("location:index.php");
+
+}
+
+
+include('db_connect.php');
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Database connection setup
-    $servername = "localhost";
-    $username = "username";
-    $password = "password";
-    $dbname = "database";
+    // $servername = "localhost";
+    // $username = "root";
+    // $password = "";
+    // $dbname = "database";
 
     // Create connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
+    // $conn = new mysqli($servername, $username, $password, $dbname);
 
     // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
+    // if ($conn->connect_error) {
+    //     die("Connection failed: " . $conn->connect_error);
+    // }
 
     // Prepare the arrays from POST data
+    $codes=$_POST['code'];
     $names = $_POST['name'];
+    $boss=$_POST['bos'];
+    $saks=$_POST['sak'];
     $quantities = $_POST['qty'];
     $rates = $_POST['rate'];
     $taxes = $_POST['tax'];
     $totals = $_POST['total'];
 
+// Query to get the last order_uid
+$sql = "SELECT order_uid FROM order_new ORDER BY order_new_id DESC LIMIT 1";
+$result = $con->query($sql);
+
+if ($result->num_rows > 0) {
+    // Fetch the last order_uid
+    $row = $result->fetch_assoc();
+    $last_order_uid = $row['order_uid'];
+
+    // Assuming order_uid is numeric, increment it by 1
+    $new_order_uid = (int)$last_order_uid + 1;
+} else {
+    // If no previous order_uid exists, start with a default value
+    $new_order_uid = 1; // Or any other starting value
+}
+
+echo "The new order_uid is: " . $new_order_uid;
+
+
     // Loop through the arrays and insert each row into the database
     for ($i = 0; $i < count($names); $i++) {
-        $name = $conn->real_escape_string($names[$i]);
+        $code= $con->real_escape_string($codes[$i]);
+        $name = $con->real_escape_string($names[$i]);       
+        $bos=$con->real_escape_string($boss[$i]); 
+        $sak=$con->real_escape_string($saks[$i]); 
         $qty = (float)$quantities[$i];
         $rate = (float)$rates[$i];
         $tax = (float)$taxes[$i];
         $total = (float)$totals[$i];
 
-        // Insert query
-        $sql = "INSERT INTO products (name, qty, rate, tax, total)
-                VALUES ('$name', $qty, $rate, $tax, $total)";
 
-        if (!$conn->query($sql)) {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+        // Insert query
+        $sql = "INSERT INTO order_new (`code`,`name`,`bos`,`sak`, `qty`, `rate`, `tax`,`total`,`order_uid`)
+                VALUES ('$code','$name','$bos','$sak','$qty',' $rate', '$tax',' $total'  ,'$new_order_uid')";
+
+        if (!$con->query($sql)) {
+            echo "Error: " . $sql . "<br>" . $con->error;
         }
     }
 
     echo "Records inserted successfully.";
 
     // Close the connection
-    $conn->close();
+    $con->close();
 }
 ?>
 <!DOCTYPE html>
@@ -69,11 +108,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <label for="grandTotal">Grand Total:</label>
     <input type="text" id="grandTotal" readonly>
 </div>
-
+<form method="POST">
 <table id="productTable">
+
     <thead>
-        <tr>
+    <tr>
+            <th >Code</th>
             <th>Name</th>
+            <th>Bos</th>
+            <th>Sak</th>
             <th>Qty</th>
             <th>Rate</th>
             <th>Tax (%)</th>
@@ -81,8 +124,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </tr>
     </thead>
     <tbody>
-        <tr>
+    <tr>
+            <td><input type="text" name="code[]" class="code" ></td>
             <td><input type="text" name="name[]" class="name"></td>
+            <td><input type="text" name="bos[]" class="bos" ></td>
+            <td><input type="text" name="sak[]" class="sak" ></td>
             <td><input type="number" name="qty[]" class="qty" value="0"></td>
             <td><input type="number" name="rate[]" class="rate" value="0"></td>
             <td><input type="number" name="tax[]" class="tax" value="0"></td>
@@ -90,7 +136,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </tr>
     </tbody>
 </table>
+
+<button type="submit">Submit</button>
+</form>
 <button id="addRow">Add Row</button>
+<button id="printpdf">Print PDF</button>
 
 <script>
 $(document).ready(function() {
@@ -124,7 +174,10 @@ $(document).ready(function() {
     // Add a new row when needed
     $('#addRow').click(function() {
         let newRow = `<tr>
+             <td><input type="text" name="code[]" class="code" ></td>
             <td><input type="text" name="name[]" class="name"></td>
+            <td><input type="text" name="bos[]" class="bos" ></td>
+            <td><input type="text" name="sak[]" class="sak" ></td>
             <td><input type="number" name="qty[]" class="qty" value="0"></td>
             <td><input type="number" name="rate[]" class="rate" value="0"></td>
             <td><input type="number" name="tax[]" class="tax" value="0"></td>
