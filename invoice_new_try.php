@@ -11,13 +11,13 @@
     <style type="text/css">
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: Arial, sans-serif; font-size: 14px; line-height: 1.4; }
-        #page-wrap { max-width: 58mm; margin: 0 auto; padding: 10px; }
+        #page-wrap { max-width: 80mm; margin: 0 auto; padding: 10px; }
 
         @media print {
             #printbtn { display: none; }
         }
 
-        #header { text-align: center; font-weight: bold; font-size: 18px; padding: 10px 0; border-bottom: 1px dashed #000; }
+        #header { text-align: center; font-weight: bold;height: auto; font-size: 18px; padding: 10px 0; border-bottom: 1px dashed #000; }
         #meta, #items { width: 100%; margin-top: 10px; font-size: 14px; }
         table { width: 100%; border-collapse: collapse; font-size: 14px; }
         table th, table td { padding: 5px; border-bottom: 1px dashed #000; }
@@ -76,10 +76,10 @@
             ?>
             <tr>
                 <td><?php echo $row['name']; ?></td>
-                <td><?php echo 'Rs ' . number_format($row['rate'], 2); ?></td>
+                <td><?php echo number_format($row['rate'], 2); ?></td>
                 <td><?php echo $row['qty']; ?></td>
                 <td><?php echo $row['tax']; ?>%</td>
-                <td><?php echo 'Rs ' . number_format($itemTotal, 2); ?></td>
+                <td><?php echo  number_format($itemTotal, 2); ?></td>
             </tr>
         <?php endwhile; ?>
     </table>
