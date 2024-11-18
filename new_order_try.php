@@ -71,7 +71,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $tax = (float)$taxes[$i];
         $total = (float)$totals[$i];
 
-
+        if( empty($code) ||empty($name) ||empty($bos)||empty($sak) || empty($qty)|| empty($rate) || empty($tax) ){
+        }
+        else{
         // Insert query
         $sql = "INSERT INTO order_new (`code`,`name`,`bos`,`sak`, `qty`, `rate`, `tax`,`total`,`order_uid`)
                 VALUES ('$code','$name','$bos','$sak','$qty',' $rate', '$tax',' $total'  ,'$new_order_uid')";
@@ -80,8 +82,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "Error: " . $sql . "<br>" . $con->error;
         }
     }
+    }
 
     echo "Records inserted successfully.";
+//    echo' <script>
+//     window.location="invoice_new_try.php?id=" . $new_order_uid . "\";</script>';
+header("Location: invoice_new_try.php?id=" . $new_order_uid);
+exit();
+
 
     // Close the connection
     $con->close();
@@ -140,15 +148,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </tr>
     </tbody>
 </table>
-
-<button type="submit">Submit</button>
+<?php echo"
+<a class='btn btn-primary' href=\"invoice_new_try.php?id=" . $new_order_uid . "\" target='_blank'><button  >Submit</button></a>";
+?>
 </form>
 <button id="addRow">Add Row</button>
-<?php echo "<a class='btn btn-primary'  href=\"invoice_new_try.php?id=" . $last_order_uid . "\" target='_blank'><button><i class='fas fa-receipt'>Print</i></button></a> ";
-                                    if ($user_type == 'admin') {
-
-                                        echo "<td> <a class='confirmation btn btn-danger'  href=\"delete_order.php?id=" . $new_order_uid . "\" ><i class='fas fa-trash'> </i></a></td>";
-                                    }?>
+<?php echo "<a class='btn btn-primary'  href=\"invoice_new_try.php?id=" . $new_order_uid . "\" target='_blank'><button><i class='fas fa-receipt'>Print</i></button></a> ";
+                             ?>
 
 <script>
 $(document).ready(function() {
