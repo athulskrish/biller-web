@@ -30,7 +30,7 @@ if ($result->num_rows > 0) {
     $new_order_uid = 1; // Or any other starting value
 }
 
-echo "The new order_uid is: " . $new_order_uid;
+// echo "The new order_uid is: " . $new_order_uid;
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -84,10 +84,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     }
 
-    echo "Records inserted successfully.";
-//    echo' <script>
-//     window.location="invoice_new_try.php?id=" . $new_order_uid . "\";</script>';
-header("Location: invoice_new_try.php?id=" . $new_order_uid);
+    // echo "Records inserted successfully.";
+    echo "<script>
+        window.open('invoice_new_try.php?id=" . $new_order_uid . "', '_blank');
+        </script>";
+    // header("Location: invoice_new_try.php?id=" . $new_order_uid,'_blank');
 exit();
 
 
