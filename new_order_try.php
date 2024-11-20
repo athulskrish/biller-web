@@ -1,6 +1,4 @@
 <?php
-
-
 session_start();
 if (isset($_SESSION['email']) AND isset($_SESSION['user_type']) AND isset($_SESSION['key']) )
     echo " ";
@@ -8,6 +6,10 @@ else {
     header("location:index.php");
 
 }
+include('Head.php');
+ $count=0;
+
+
 
 
 include('db_connect.php');
@@ -77,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Insert query
         $sql = "INSERT INTO order_new (`code`,`name`,`bos`,`sak`, `qty`, `rate`, `tax`,`total`,`order_uid`)
                 VALUES ('$code','$name','$bos','$sak','$qty',' $rate', '$tax',' $total'  ,'$new_order_uid')";
-
+      
         if (!$con->query($sql)) {
             echo "Error: " . $sql . "<br>" . $con->error;
         }
@@ -85,9 +87,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // echo "Records inserted successfully.";
+   
     echo "<script>
         window.open('invoice_new_try.php?id=" . $new_order_uid . "', '_blank');
+        
         </script>";
+    
+    //  header("  location.reload()");//
     // header("Location: invoice_new_try.php?id=" . $new_order_uid,'_blank');
 exit();
 
@@ -111,6 +117,7 @@ exit();
         }
         .total-container {
             margin-bottom: 15px;
+            width:80%;
         }
     </style>
 </head>
@@ -217,6 +224,9 @@ $(document).ready(function() {
     });
 });
 </script>
+<?php
+include('Tail.php');
+?>
 
 </body>
 </html>

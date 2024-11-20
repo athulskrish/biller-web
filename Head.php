@@ -102,7 +102,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="category.php" class="nav-link active">
+                            <a href="category.php" class="nav-link ">
                                 <i class="nav-icon fas fa-book"></i>
                                 <p>
                                     Products Category
@@ -127,6 +127,15 @@
                                 <i class="nav-icon fas fa-sort-amount-up"></i>
                                 <p>
                                     Orders
+
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="new_order_try.php" class="nav-link ">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>
+                                  Add orders
 
                                 </p>
                             </a>
