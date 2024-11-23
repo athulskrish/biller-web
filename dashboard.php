@@ -141,7 +141,15 @@ to get the desired effect
             </a>
           </li>
 
+          <li class="nav-item">
+            <a href="new_order_try.php" class="nav-link">
+              <i class="nav-icon fas fa-sort-amount-up"></i>
+              <p>
+               Add  Orders
 
+              </p>
+            </a>
+          </li>
           <li class="nav-item">
             <a href="orders.php" class="nav-link">
               <i class="nav-icon fas fa-sort-amount-up"></i>
