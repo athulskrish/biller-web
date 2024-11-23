@@ -1,11 +1,11 @@
 <?php
-session_start();
-if (isset($_SESSION['email']) AND isset($_SESSION['user_type']) AND isset($_SESSION['key']) )
-    echo " ";
-else {
-    header("location:index.php");
+// session_start();
+// if (isset($_SESSION['email']) AND isset($_SESSION['user_type']) AND isset($_SESSION['key']) )
+//     echo " ";
+// else {
+//     header("location:index.php");
 
-}
+// }
 include('Head.php');
  $count=0;
 
