@@ -74,6 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $total = (float)$totals[$i];
 
         if( empty($code) ||empty($name) ||empty($bos)||empty($sak) || empty($qty)|| empty($rate) || empty($tax) ){
+        continue;
         }
         else{
         // Insert query
